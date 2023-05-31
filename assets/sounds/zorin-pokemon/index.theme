@@ -1,0 +1,6 @@
+[Sound Theme]
+Name=Zorin-Pokemon
+Directories=stereo
+
+[stereo]
+OutputProfile=stereo
