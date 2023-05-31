@@ -2,7 +2,7 @@
 
 Completely Transform a new Fedora WorkStation install.
 
-To put things simply, these changes are not big enough to make a full linux distro, but they try to act like one.
+To put things simply, these changes are not big enough to make a full linux distro, but this script tries to act like one.
 
 Note: Creating a backup of your distro before running this script is recommended.
 
