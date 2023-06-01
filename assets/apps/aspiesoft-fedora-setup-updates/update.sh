@@ -22,7 +22,19 @@ fi
 echo "updating $ver -> $gitVer"
 
 git clone https://github.com/AspieSoft/fedora-setup.git
-cd fedora-setup/bin/updates
+
+cd fedora-setup
+
+for file in bin/scripts/*.sh; do
+  gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  if ! [ "$sum" = "$gitSum" ]; then
+    echo "checksum failed!"
+    exit
+  fi
+done
+
+cd bin/updates
 
 readarray -d '' fileList < <(printf '%s\0' *.sh | sort -zV)
 for file in "${fileList[@]}"; do
