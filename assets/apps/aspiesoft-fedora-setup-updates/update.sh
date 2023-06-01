@@ -30,9 +30,15 @@ for file in "${fileList[@]}"; do
   if ! [ "$ver" == "${fileVer[0]}.${fileVer[1]}.${fileVer[2]}" ]; then
     verN=(${ver//./ })
     if [ "${verN[0]}" -le "${fileVer[0]}" ] && [ "${verN[1]}" -le "${fileVer[1]}" ] && [ "${verN[2]}" -le "${fileVer[2]}" ]; then
-      echo "updating $ver -> ${fileVer[0]}.${fileVer[1]}.${fileVer[2]}"
-      sudo bash "$file"
-      ver="${fileVer[0]}.${fileVer[1]}.${fileVer[2]}"
+      gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/bin/updates/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+      sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+      if [ "$sum" = "$gitSum" ]; then
+        echo "updating $ver -> ${fileVer[0]}.${fileVer[1]}.${fileVer[2]}"
+        sudo bash "$file"
+        ver="${fileVer[0]}.${fileVer[1]}.${fileVer[2]}"
+      else
+        echo "checksum failed for update ${fileVer[0]}.${fileVer[1]}.${fileVer[2]}"
+      fi
     fi
   fi
 done

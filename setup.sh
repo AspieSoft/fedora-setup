@@ -2,6 +2,8 @@
 
 cd $(dirname "$0")
 
+autoUpdates="y"
+
 if ! [ "$1" = "-y" ]; then
   echo
   echo "Notice: This script will completely transform your desktop and modify your settings!"
@@ -14,6 +16,8 @@ if ! [ "$1" = "-y" ]; then
     echo "install canceled!"
     exit
   fi
+
+  read -n1 -p "Would you like automatic updates to be pulled from the github repo (Y/n)? " autoUpdates ; echo >&2
 
   echo "Starting Install..."
   echo
@@ -105,13 +109,16 @@ bash "./bin/scripts/theme.sh"
 
 
 # setup aspiesoft auto updates
-sudo mkdir -p /etc/aspiesoft-fedora-setup-updates
-sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
-sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop
-sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "$HOME/.config/autostart"
-sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "/etc/skel/.config/autostart"
-gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
-echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
+if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$autoUpdates" = " " ] ; then
+  sudo mkdir -p /etc/aspiesoft-fedora-setup-updates
+  sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
+  sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop
+  sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "$HOME/.config/autostart"
+  sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "/etc/skel/.config/autostart"
+  gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+  echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
+fi
+
 
 # reset login timeout
 sudo sed -r -i 's/^Defaults([\t ]+)(.*)env_reset(.*), (timestamp_timeout=1801,?\s*)+$/Defaults\1\2env_reset\3/m' /etc/sudoers &>/dev/null
