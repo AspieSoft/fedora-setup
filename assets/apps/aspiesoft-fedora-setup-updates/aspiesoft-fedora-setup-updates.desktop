@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=bash /etc/aspiesoft-fedora-setup-updates/init.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=AspieSoft Fedora Setup Updates
+Name=AspieSoft Fedora Setup Updates
+Comment[en_US]=
+Comment=
