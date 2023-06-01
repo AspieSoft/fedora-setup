@@ -29,10 +29,12 @@ for file in bin/scripts/*.sh; do
   gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   if ! [ "$sum" = "$gitSum" ]; then
-    echo "checksum failed!"
+    echo "error: checksum failed!"
     exit
   fi
 done
+
+sudo nice -n 15 clamscan && sudo clamscan -r --bell --move="/VirusScan/quarantine" --exclude-dir="/VirusScan/quarantine" "$PWD/assets"
 
 cd bin/updates
 

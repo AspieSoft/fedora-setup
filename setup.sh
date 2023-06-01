@@ -50,6 +50,16 @@ sudo systemctl --runtime mask sleep.target suspend.target hibernate.target hybri
 gsettings set org.gnome.software download-updates false
 
 
+for file in bin/scripts/*.sh; do
+  gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  if ! [ "$sum" = "$gitSum" ]; then
+    echo "error: checksum failed!"
+    exit
+  fi
+done
+
+
 # set theme basics
 gsettings set org.gnome.desktop.interface clock-format 12h
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
@@ -100,6 +110,9 @@ bash "./bin/scripts/repos.sh"
 
 # RUN apps.sh
 bash "./bin/scripts/apps.sh"
+
+# RUN shortcuts.sh
+bash "./bin/scripts/shortcuts.sh"
 
 sudo dnf -y update
 sudo dnf clean all
