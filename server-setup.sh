@@ -29,6 +29,16 @@ echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
 echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
 
 sudo dnf -y update
+
+# install ufw and disable firewalld
+sudo dnf -y install ufw
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+sudo systemctl enable ufw
+sudo systemctl start ufw
+sudo ufw allow SSH
+sudo ufw enable
+
 sudo dnf -y makecache
 
 # install python, c++, and java
