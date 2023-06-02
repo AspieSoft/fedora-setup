@@ -37,6 +37,8 @@ sudo systemctl disable firewalld
 sudo systemctl enable ufw
 sudo systemctl start ufw
 sudo ufw allow SSH
+sudo ufw allow https
+sudo ufw allow http
 sudo ufw enable
 
 sudo dnf -y makecache
@@ -164,6 +166,50 @@ sudo ln -s "/root/aspiesoft-auto-clamscan.service" "/etc/rc.d/aspiesoft-autoclam
 sudo dnf -y install dnf-automatic
 sudo sed -r -i 's/^apply_updates(\s*)=(\s*)(.*)$/apply_updates\1=\2yes/m' "/etc/dnf/automatic.conf"
 systemctl enable --now dnf-automatic.timer
+
+
+# add rpmfusion repos
+sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo fedora-third-party enable
+sudo fedora-third-party refresh
+sudo dnf -y groupupdate core
+
+# install media codecs
+sudo dnf install -y --skip-broken @multimedia
+sudo dnf -y groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin --skip-broken
+sudo dnf -y groupupdate sound-and-video
+
+
+# install docker
+sudo dnf -y install dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable docker
+sudo systemctl start docker
+
+
+# install php
+sudo dnf -y install php php-cli phpunit composer
+sudo dnf -y install php-mysqli php-bcmath php-dba php-dom php-enchant php-fileinfo php-gd php-intl php-ldap php-mbstring php-mysqli php-mysqlnd php-odbc php-pdo php-pgsql php-phar php-posix php-pspell php-soap php-sockets php-sqlite3 php-sysvmsg php-sysvsem php-sysvshm php-tidy php-xmlreader php-xmlwriter php-xsl php-yaml php-zip php-memcache php-mailparse php-imagick php-igbinary php-redis php-curl php-cli php-common php-opcache
+
+
+# install nginx
+sudo dnf -y install nginx
+sudo systemctl enable nginx.service
+sudo systemctl start nginx.service
+
+
+# install letsencrypt certbot
+sudo dnf -y install snapd
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install core
+sudo snap refresh core
+sudo dnf -y remove certbot
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo snap set certbot trust-plugin-with-root=ok
+sudo snap install certbot-dns-cloudflare
 
 
 sudo dnf -y update
