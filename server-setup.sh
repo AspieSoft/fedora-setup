@@ -14,6 +14,12 @@ if ! [ "$1" = "-y" ]; then
   fi
 fi
 
+echo "Starting Install..."
+echo
+
+# To log into sudo with password prompt
+sudo echo
+
 # improve dnf speed
 echo "#Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
@@ -114,3 +120,5 @@ fi
 
 sudo dnf -y update
 sudo dnf clean all
+
+echo "Install Finished!"

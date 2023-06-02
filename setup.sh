@@ -18,10 +18,10 @@ if ! [ "$1" = "-y" ]; then
   fi
 
   read -n1 -p "Would you like automatic updates to be pulled from the github repo (Y/n)? " autoUpdates ; echo >&2
-
-  echo "Starting Install..."
-  echo
 fi
+
+echo "Starting Install..."
+echo
 
 function cleanup() {
   # reset login timeout
