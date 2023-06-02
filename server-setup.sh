@@ -4,7 +4,7 @@ if ! [ "$1" = "-y" ]; then
   echo
   echo "This is the install for web servers."
   echo "If your looking for a gnome desktop setup, please run setup.sh instead."
-  echo "This scripts installs some of the basics for a web server (optimized for linode)."
+  echo "This scripts installs common programing languages, clamav, and other useful tools for servers."
   echo
   read -n1 -p "Would you like to continue with the install (Y/n)? " input ; echo >&2
 
