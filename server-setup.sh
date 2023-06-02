@@ -119,6 +119,43 @@ else
   echo 'User root' | sudo tee -a "/etc/clamd.d/scan.conf"
 fi
 
+
+sudo mkdir "/etc/aspiesoft-auto-clamscan"
+
+sudo touch "/etc/aspiesoft-auto-clamscan/init.sh"
+echo '#!/bin/bash' | sudo tee -a "/etc/aspiesoft-auto-clamscan/init.sh"
+echo '' | sudo tee -a "/etc/aspiesoft-auto-clamscan/init.sh"
+echo 'if ! [[ $(crontab -l) == *"# aspiesoft-auto-clamscan"* ]] ; then' | sudo tee -a "/etc/aspiesoft-auto-clamscan/init.sh"
+echo '  crontab -l | { cat; echo "0 2 * * * sudo bash /etc/aspiesoft-auto-clamscan/scan.sh # aspiesoft-auto-clamscan"; } | crontab -' | sudo tee -a "/etc/aspiesoft-auto-clamscan/init.sh"
+echo 'fi' | sudo tee -a "/etc/aspiesoft-auto-clamscan/init.sh"
+
+sudo touch "/etc/aspiesoft-auto-clamscan/scan.sh"
+echo '#!/bin/bash' | sudo tee -a "/etc/aspiesoft-auto-clamscan/scan.sh"
+echo '' | sudo tee -a "/etc/aspiesoft-auto-clamscan/scan.sh"
+echo 'sudo nice -n 15 clamscan && sudo clamscan -r --bell --move="/VirusScan/quarantine" --exclude-dir="/VirusScan/quarantine" --exclude-dir="/home/$USER/.clamtk/viruses" --exclude-dir="smb4k" --exclude-dir="/run/user/$USER/gvfs" --exclude-dir="/home/$USER/.gvfs" --exclude-dir=".thunderbird" --exclude-dir=".mozilla-thunderbird" --exclude-dir=".evolution" --exclude-dir="Mail" --exclude-dir="kmail" --exclude-dir="^/sys" "/"' | sudo tee -a "/etc/aspiesoft-auto-clamscan/scan.sh"
+
+sudo touch "/root/aspiesoft-auto-clamscan.service"
+echo '[Unit]' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'Description=Init AspieSoft Auto Clamscan' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'service aspiesoft-auto-clamscan.service' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'partOf=aspiesoft-auto-clamscan.service' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo '' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo '[Service]' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'ExecStart=/etc/aspiesoft-auto-clamscan/init.sh' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'RemainAfterExit=yes' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo '' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo '[Install]' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+echo 'WantedBy=mulit-user.target' | sudo tee -a "/root/aspiesoft-auto-clamscan.service"
+sudo chmod +x "/root/aspiesoft-auto-clamscan.service"
+sudo ln -s "/root/aspiesoft-auto-clamscan.service" "/etc/rc.d/aspiesoft-autoclam-scan.service"
+
+
+# auto updates
+sudo dnf -y install dnf-automatic
+sudo sed -r -i 's/^apply_updates(\s*)=(\s*)(.*)$/apply_updates\1=\2yes/m' "/etc/dnf/automatic.conf"
+systemctl enable --now dnf-automatic.timer
+
+
 sudo dnf -y update
 sudo dnf clean all
 
