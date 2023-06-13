@@ -21,8 +21,8 @@ sudo cp ./assets/backgrounds/aspiesoft.xml /usr/share/gnome-background-propertie
 gsettings set org.gnome.desktop.interface gtk-theme "Fluent-round-Dark"
 gsettings set org.gnome.desktop.interface icon-theme "ZorinBlue-Dark"
 gsettings set org.gnome.desktop.sound theme-name "zorin-pokemon"
-gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/lightblue.jpg"
-gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.jpg"
+gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/blue.png"
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.png"
 
 sudo pip3 install --upgrade git+https://github.com/essembeh/gnome-extensions-cli
 
