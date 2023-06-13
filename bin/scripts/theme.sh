@@ -12,17 +12,16 @@ done
 sudo cp -r zorin-icon-themes/Zorin* /usr/share/icons
 rm -rf zorin-icon-themes
 
-sudo cp -r ./assets/sounds/* /usr/share/sounds
-sudo mkdir /usr/share/backgrounds/AspieSoft
-sudo cp -r ./assets/backgrounds/* /usr/share/backgrounds/AspieSoft
-sudo rm ./assets/backgrounds/aspiesoft.xml
+sudo tar -xvzf ./assets/sounds/sounds.tar.gz -C /usr/share/sounds
+sudo mkdir -p /usr/share/backgrounds/aspiesoft
+sudo tar -xvzf ./assets/backgrounds/aspiesoft.tar.gz -C /usr/share/backgrounds/aspiesoft
 sudo cp ./assets/backgrounds/aspiesoft.xml /usr/share/gnome-background-properties
 
 gsettings set org.gnome.desktop.interface gtk-theme "Fluent-round-Dark"
 gsettings set org.gnome.desktop.interface icon-theme "ZorinBlue-Dark"
 gsettings set org.gnome.desktop.sound theme-name "zorin-pokemon"
-gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/blue.png"
-gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.png"
+gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/blue.webp"
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.webp"
 
 sudo pip3 install --upgrade git+https://github.com/essembeh/gnome-extensions-cli
 
