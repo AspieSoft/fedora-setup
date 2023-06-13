@@ -15,6 +15,8 @@ rm -rf zorin-icon-themes
 sudo cp -r ./assets/sounds/* /usr/share/sounds
 sudo mkdir /usr/share/backgrounds/AspieSoft
 sudo cp -r ./assets/backgrounds/* /usr/share/backgrounds/AspieSoft
+sudo rm ./assets/backgrounds/aspiesoft.xml
+sudo cp ./assets/backgrounds/aspiesoft.xml /usr/share/gnome-background-properties
 
 gsettings set org.gnome.desktop.interface gtk-theme "Fluent-round-Dark"
 gsettings set org.gnome.desktop.interface icon-theme "ZorinBlue-Dark"
