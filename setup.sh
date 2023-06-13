@@ -125,11 +125,14 @@ bash "./bin/scripts/theme.sh"
 if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$autoUpdates" = " " ] ; then
   sudo mkdir -p /etc/aspiesoft-fedora-setup-updates
   sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
-  sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop
-  sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "$HOME/.config/autostart"
-  sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.desktop "/etc/skel/.config/autostart"
+  sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service
+  sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service "/etc/systemd/system"
   gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
   echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
+
+  sudo systemctl daemon-reload
+  sudo systemctl enable aspiesoft-fedora-setup-updates.service
+  sudo systemctl start aspiesoft-fedora-setup-updates.service
 fi
 
 
