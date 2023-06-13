@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # RUN shortcuts.sh
-bash "./bin/scripts/shortcuts.sh"
+bash "../scripts/shortcuts.sh"
