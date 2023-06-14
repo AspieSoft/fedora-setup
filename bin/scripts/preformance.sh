@@ -17,6 +17,11 @@ sudo dnf -y install thermald
 sudo systemctl start thermald
 sudo systemctl enable thermald
 
+
+#todo: consider adding for an optional preformance mode (power mode)
+#sudo dnf install gnome-power-manager power-profiles-daemon
+
+
 # disable time wasting startup programs
 sudo systemctl disable NetworkManager-wait-online.service
 sudo systemctl disable systemd-networkd.service
