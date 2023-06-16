@@ -50,8 +50,27 @@ sudo systemctl --runtime mask sleep.target suspend.target hibernate.target hybri
 gsettings set org.gnome.software download-updates false
 
 
+function waitForWifi() {
+  wget -q --spider http://google.com
+  if ! [ $? -eq 0 ]; then
+    echo
+    echo "Internet Connection Error: Waiting for wifi..."
+    echo
+
+    sleep 10
+
+    wget -q --spider http://google.com
+
+    while ! [ $? -eq 0 ]; do
+      sleep 3
+      wget -q --spider http://google.com
+    done
+  fi
+}
+
+
 for file in bin/scripts/*.sh; do
-  gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  waitForWifi &&   gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   if ! [ "$sum" = "$gitSum" ]; then
     echo "error: checksum failed!"
@@ -72,10 +91,10 @@ echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
 echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
 echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
 
-sudo dnf -y update
+waitForWifi && sudo dnf -y update
 
 # install ufw and disable firewalld
-sudo dnf -y install ufw
+waitForWifi && sudo dnf -y install ufw
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 sudo systemctl enable ufw
@@ -85,7 +104,7 @@ sudo ufw delete allow SSH
 sudo ufw delete allow to 244.0.0.251 app mDNS
 sudo ufw delete allow to ff02::fb app mDNS
 
-sudo dnf -y makecache
+waitForWifi && sudo dnf -y makecache
 
 # RUN programing-languages.sh
 bash "./bin/scripts/programing-languages.sh"
@@ -114,7 +133,7 @@ bash "./bin/scripts/apps.sh"
 # RUN shortcuts.sh
 bash "./bin/scripts/shortcuts.sh"
 
-sudo dnf -y update
+waitForWifi && sudo dnf -y update
 sudo dnf clean all
 
 # RUN theme.sh
@@ -127,7 +146,7 @@ if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$au
   sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
   sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service
   sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service "/etc/systemd/system"
-  gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+  waitForWifi &&   gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
   echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
 
   sudo systemctl daemon-reload

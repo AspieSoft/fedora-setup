@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # install file systems
-sudo dnf -y install btrfs-progs lvm2 xfsprogs udftools
+waitForWifi && sudo dnf -y install btrfs-progs lvm2 xfsprogs udftools
 
 # install printer software
-sudo dnf -y install hplip hplip-gui
+waitForWifi && sudo dnf -y install hplip hplip-gui
 
 # hide core files
 if ! [ -f "$HOME/.hidden" ]; then

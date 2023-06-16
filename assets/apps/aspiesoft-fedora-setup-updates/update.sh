@@ -3,6 +3,26 @@
 cd $(dirname "$0")
 dir="$PWD"
 
+
+function waitForWifi() {
+  wget -q --spider http://google.com
+  if ! [ $? -eq 0 ]; then
+    echo
+    echo "Internet Connection Error: Waiting for wifi..."
+    echo
+
+    sleep 10
+
+    wget -q --spider http://google.com
+
+    while ! [ $? -eq 0 ]; do
+      sleep 3
+      wget -q --spider http://google.com
+    done
+  fi
+}
+
+
 echo "starting update for aspiesoft-fedora-setup"
 
 gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
@@ -21,10 +41,11 @@ fi
 
 echo "updating $ver -> $gitVer"
 
-git clone https://github.com/AspieSoft/fedora-setup.git
+waitForWifi && git clone https://github.com/AspieSoft/fedora-setup.git
 
 cd fedora-setup
 
+waitForWifi
 for file in bin/scripts/*.sh; do
   gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
@@ -45,6 +66,7 @@ for file in "${fileList[@]}"; do
   if ! [ "$ver" == "${fileVer[0]}.${fileVer[1]}.${fileVer[2]}" ]; then
     verN=(${ver//./ })
     if [ "${verN[0]}" -le "${fileVer[0]}" ] && [ "${verN[1]}" -le "${fileVer[1]}" ] && [ "${verN[2]}" -le "${fileVer[2]}" ]; then
+      waitForWifi
       gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/bin/updates/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
       sum=$(sha256sum "bin/updates/$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
       if [ "$sum" = "$gitSum" ]; then
