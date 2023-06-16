@@ -3,6 +3,7 @@
 cd $(dirname "$0")
 
 autoUpdates="y"
+slowWifi="n"
 
 if ! [ "$1" = "-y" ]; then
   echo
@@ -18,6 +19,7 @@ if ! [ "$1" = "-y" ]; then
   fi
 
   read -n1 -p "Would you like automatic updates to be pulled from the github repo (Y/n)? " autoUpdates ; echo >&2
+  read -n1 -p "Are you downloading on slow internet or a hotspot (y/N)? " slowWifi ; echo >&2
 fi
 
 echo "Starting Install..."
@@ -36,6 +38,9 @@ function cleanup() {
 
   # enable auto suspend
   sudo perl -0777 -i -pe 's/#AspieSoft-TEMP-START(.*)#AspieSoft-TEMP-END//s' /etc/systemd/logind.conf &>/dev/null
+
+  # reenable dnf timeout if temporarly disabled
+  sudo perl -0777 -i -pe 's/#AspieSoft-TEMP-START(.*)#AspieSoft-TEMP-END//s' /etc/dnf/dnf.conf &>/dev/null
 }
 trap cleanup EXIT
 
@@ -106,11 +111,26 @@ gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 
 # improve dnf speed
-echo "#Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
-echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
-echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
-echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
-echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
+if ! grep -R "^# Added for Speed" "/etc/dnf/dnf.conf"; then
+  echo "# Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
+  echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+  echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
+  echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
+  echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
+  echo "skip_if_unavailable=True" | sudo tee -a /etc/dnf/dnf.conf
+fi
+
+if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
+  # temporarly disable dnf timeout
+  if ! grep -R "^#AspieSoft-TEMP-START" "/etc/dnf/dnf.conf"; then
+    echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+    echo "timeout=0" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+    echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+  fi
+else
+  # reenable dnf timeout if temporarly disabled
+  sudo perl -0777 -i -pe 's/#AspieSoft-TEMP-START(.*)#AspieSoft-TEMP-END//s' /etc/dnf/dnf.conf &>/dev/null
+fi
 
 waitForWifi sudo dnf -y update
 
