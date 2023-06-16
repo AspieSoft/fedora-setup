@@ -8,5 +8,5 @@ This script also adds an auto update checker, to automatically add in new featur
 Note: Creating a backup of your distro before running this script is recommended.
 
 ```shell
-  git clone https://github.com/AspieSoft/fedora-setup.git && fedora-setup/setup.sh
+git clone https://github.com/AspieSoft/fedora-setup.git && fedora-setup/setup.sh
 ```
