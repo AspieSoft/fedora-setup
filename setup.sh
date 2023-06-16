@@ -141,7 +141,7 @@ if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
   if ! grep -R "^#AspieSoft-TEMP-START" "/etc/dnf/dnf.conf"; then
     echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
     echo "minrate=300" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
-    echo "timeout=60" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+    echo "timeout=10" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
     echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
   fi
 else
