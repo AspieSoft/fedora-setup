@@ -96,7 +96,7 @@ function waitForWifi() {
 
 
 for file in bin/scripts/*.sh; do
-  waitForWifi gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+  gitSum=$(waitForWifi curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
   if ! [ "$sum" = "$gitSum" ]; then
     echo "error: checksum failed!"
@@ -187,7 +187,7 @@ if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$au
   sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
   sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service
   sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service "/etc/systemd/system"
-  waitForWifi gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+  gitVer="$(waitForWifi curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
   echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
 
   sudo systemctl daemon-reload
