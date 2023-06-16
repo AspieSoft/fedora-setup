@@ -112,28 +112,40 @@ function waitForWifi() {
 }
 
 
-for file in bin/scripts/*.sh; do
-  gitSum=$(waitForWifi curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
-  sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
-  if ! [ "$sum" = "$gitSum" ]; then
-    echo "error: checksum failed!"
-    exit
-  fi
-done
+if [ "$processStep" -lt "1" ]; then
+  for file in bin/scripts/*.sh; do
+    gitSum=$(waitForWifi curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+    sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+    if ! [ "$sum" = "$gitSum" ]; then
+      echo "error: checksum failed!"
+      exit
+    fi
+  done
+
+  processStep=$((processStep+1))
+fi
 
 
 # set theme basics
-gsettings set org.gnome.desktop.interface clock-format 12h
-gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+if [ "$processStep" -lt "2" ]; then
+  gsettings set org.gnome.desktop.interface clock-format 12h
+  gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+
+  processStep=$((processStep+1))
+fi
 
 
 # improve dnf speed
-if ! grep -R "^# Added for Speed" "/etc/dnf/dnf.conf"; then
-  echo "# Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
-  echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
-  echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
-  echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
-  echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
+if [ "$processStep" -lt "3" ]; then
+  if ! grep -R "^# Added for Speed" "/etc/dnf/dnf.conf"; then
+    echo "# Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
+    echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+    echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
+    echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
+    echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
+  fi
+
+  processStep=$((processStep+1))
 fi
 
 if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
@@ -141,7 +153,7 @@ if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
   if ! grep -R "^#AspieSoft-TEMP-START" "/etc/dnf/dnf.conf"; then
     echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
     echo "minrate=300" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
-    echo "timeout=10" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+    echo "timeout=60" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
     echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
   fi
 else
@@ -149,7 +161,7 @@ else
   sudo perl -0777 -i -pe 's/#AspieSoft-TEMP-START(.*)#AspieSoft-TEMP-END//s' /etc/dnf/dnf.conf &>/dev/null
 fi
 
-if [ "$processStep" -lt "1" ]; then
+if [ "$processStep" -lt "4" ]; then
   echo "updating..."
   waitForWifi sudo dnf -y update
 
@@ -157,7 +169,7 @@ if [ "$processStep" -lt "1" ]; then
 fi
 
 # install ufw and disable firewalld
-if [ "$processStep" -lt "2" ]; then
+if [ "$processStep" -lt "5" ]; then
   echo "installing ufw..."
   waitForWifi sudo dnf -y install ufw
   sudo systemctl stop firewalld
@@ -172,14 +184,14 @@ if [ "$processStep" -lt "2" ]; then
   processStep=$((processStep+1))
 fi
 
-if [ "$processStep" -lt "3" ]; then
+if [ "$processStep" -lt "6" ]; then
   waitForWifi sudo dnf -y makecache
 
   processStep=$((processStep+1))
 fi
 
 # RUN programing-languages.sh
-if [ "$processStep" -lt "4" ]; then
+if [ "$processStep" -lt "7" ]; then
   echo "installing programing languages..."
   bash "./bin/scripts/programing-languages.sh"
 
@@ -187,7 +199,7 @@ if [ "$processStep" -lt "4" ]; then
 fi
 
 # update grub timeout
-if [ "$processStep" -lt "5" ]; then
+if [ "$processStep" -lt "8" ]; then
   echo "changing grub timeout..."
   sudo cp -n /etc/default/grub /etc/default/grub-backup
   sudo sed -r -i 's/^GRUB_TIMEOUT_STYLE=(.*)$/GRUB_TIMEOUT_STYLE=menu/m' /etc/default/grub
@@ -198,7 +210,7 @@ if [ "$processStep" -lt "5" ]; then
 fi
 
 # RUN preformance.sh
-if [ "$processStep" -lt "6" ]; then
+if [ "$processStep" -lt "9" ]; then
   echo "installing preformance upgrades..."
   bash "./bin/scripts/preformance.sh"
 
@@ -206,7 +218,7 @@ if [ "$processStep" -lt "6" ]; then
 fi
 
 # RUN fix.sh
-if [ "$processStep" -lt "7" ]; then
+if [ "$processStep" -lt "10" ]; then
   echo "installing common fices..."
   bash "./bin/scripts/fix.sh"
 
@@ -214,7 +226,7 @@ if [ "$processStep" -lt "7" ]; then
 fi
 
 # RUN security.sh
-if [ "$processStep" -lt "8" ]; then
+if [ "$processStep" -lt "11" ]; then
   echo "installing security apps..."
   bash "./bin/scripts/security.sh"
 
@@ -222,7 +234,7 @@ if [ "$processStep" -lt "8" ]; then
 fi
 
 # RUN repos.sh
-if [ "$processStep" -lt "9" ]; then
+if [ "$processStep" -lt "12" ]; then
   echo "installing repos..."
   bash "./bin/scripts/repos.sh"
 
@@ -230,7 +242,7 @@ if [ "$processStep" -lt "9" ]; then
 fi
 
 # RUN apps.sh
-if [ "$processStep" -lt "10" ]; then
+if [ "$processStep" -lt "13" ]; then
   echo "installing apps..."
   bash "./bin/scripts/apps.sh"
 
@@ -238,14 +250,14 @@ if [ "$processStep" -lt "10" ]; then
 fi
 
 # RUN shortcuts.sh
-if [ "$processStep" -lt "11" ]; then
+if [ "$processStep" -lt "14" ]; then
   echo "installing shortcuts..."
   bash "./bin/scripts/shortcuts.sh"
 
   processStep=$((processStep+1))
 fi
 
-if [ "$processStep" -lt "12" ]; then
+if [ "$processStep" -lt "15" ]; then
   waitForWifi sudo dnf -y update
   echo "running dnf clean..."
   sudo dnf clean all
@@ -254,7 +266,7 @@ if [ "$processStep" -lt "12" ]; then
 fi
 
 # RUN theme.sh
-if [ "$processStep" -lt "13" ]; then
+if [ "$processStep" -lt "16" ]; then
   echo "installing theme..."
   bash "./bin/scripts/theme.sh"
 
@@ -264,7 +276,7 @@ fi
 
 # setup aspiesoft auto updates
 if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$autoUpdates" = " " ] ; then
-  if [ "$processStep" -lt "14" ]; then
+  if [ "$processStep" -lt "17" ]; then
     echo "installing auto updates..."
 
     sudo mkdir -p /etc/aspiesoft-fedora-setup-updates
