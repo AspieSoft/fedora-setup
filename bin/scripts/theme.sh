@@ -20,8 +20,8 @@ sudo cp ./assets/backgrounds/aspiesoft.xml /usr/share/gnome-background-propertie
 gsettings set org.gnome.desktop.interface gtk-theme "Fluent-round-Dark"
 gsettings set org.gnome.desktop.interface icon-theme "ZorinBlue-Dark"
 gsettings set org.gnome.desktop.sound theme-name "zorin-pokemon"
-gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/blue.webp"
-gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.webp"
+gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/aspiesoft/blue.webp"
+gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/aspiesoft/black.webp"
 
 waitForWifi sudo pip3 install --upgrade git+https://github.com/essembeh/gnome-extensions-cli
 

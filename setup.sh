@@ -139,7 +139,7 @@ fi
 if [ "$processStep" -lt "3" ]; then
   if ! grep -R "^# Added for Speed" "/etc/dnf/dnf.conf"; then
     echo "# Added for Speed" | sudo tee -a /etc/dnf/dnf.conf
-    echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+    #echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
     echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
     echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
     echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
@@ -186,6 +186,7 @@ fi
 
 if [ "$processStep" -lt "6" ]; then
   waitForWifi sudo dnf -y makecache
+  waitForWifi sudo dnf -y update
 
   processStep=$((processStep+1))
 fi
