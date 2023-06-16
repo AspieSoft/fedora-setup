@@ -2,13 +2,13 @@
 
 # install clamav
 echo " - installing clamav..."
-waitForWifi sudo dnf -y install clamav clamd clamav-update
+sudo dnf -y install clamav clamd clamav-update
 sudo systemctl stop clamav-freshclam
 sudo freshclam
 sudo systemctl enable clamav-freshclam --now
-waitForWifi sudo dnf -y install clamtk
+sudo dnf -y install clamtk
 
-waitForWifi sudo dnf -y install cronie
+sudo dnf -y install cronie
 
 sudo freshclam
 
@@ -76,10 +76,10 @@ fi
 
 # install bleachbit
 echo " - installing bleachbit..."
-waitForWifi sudo dnf -y install bleachbit
+sudo dnf -y install bleachbit
 
 # install auto updates (for fedora)
 echo " - installing dnf-automatic..."
-waitForWifi dnf install dnf-automatic
+dnf install dnf-automatic
 sudo sed -r -i 's/^apply_updates(\s*)=(\s*)(.*)$/apply_updates\1=\2yes/m' "/etc/dnf/automatic.conf"
 systemctl enable --now dnf-automatic.timer

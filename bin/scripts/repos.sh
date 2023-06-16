@@ -1,26 +1,26 @@
 #!/bin/bash
 
 # add rpmfusion repos
-waitForWifi sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-waitForWifi sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo fedora-third-party enable
 sudo fedora-third-party refresh
-waitForWifi sudo dnf -y groupupdate core
+sudo dnf -y groupupdate core
 
 # add flathub
-waitForWifi sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # install media codecs
-waitForWifi sudo dnf install -y --skip-broken @multimedia
-waitForWifi sudo dnf -y groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin --skip-broken
-waitForWifi sudo dnf -y groupupdate sound-and-video
+sudo dnf install -y --skip-broken @multimedia
+sudo dnf -y groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin --skip-broken
+sudo dnf -y groupupdate sound-and-video
 
 # install repositories
-waitForWifi sudo dnf -y install fedora-workstation-repositories
-waitForWifi sudo dnf -y config-manager --set-enabled google-chrome
+sudo dnf -y install fedora-workstation-repositories
+sudo dnf -y config-manager --set-enabled google-chrome
 
 # import microsoft keys
-waitForWifi sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 if ! test -f "/etc/yum.repos.d/vscode.repo" ; then
   echo '[code]' | sudo tee -a "/etc/yum.repos.d/vscode.repo"
   echo 'name=Visual Studio Code' | sudo tee -a "/etc/yum.repos.d/vscode.repo"
@@ -31,7 +31,7 @@ if ! test -f "/etc/yum.repos.d/vscode.repo" ; then
 fi
 
 # import atom keys
-waitForWifi sudo rpm --import https://packagecloud.io/AtomEditor/atom/gpgkey
+sudo rpm --import https://packagecloud.io/AtomEditor/atom/gpgkey
 if ! test -f "/etc/yum.repos.d/atom.repo" ; then
   echo '[Atom]' | sudo tee -a "/etc/yum.repos.d/atom.repo"
   echo 'name=atom' | sudo tee -a "/etc/yum.repos.d/atom.repo"
@@ -42,4 +42,5 @@ if ! test -f "/etc/yum.repos.d/atom.repo" ; then
   echo 'gpgkey=https://packagecloud.io/AtomEditor/atom/gpgkey' | sudo tee -a "/etc/yum.repos.d/atom.repo"
 fi
 
-waitForWifi sudo dnf -y check-update
+sudo dnf -y check-update
+sudo flatpak update -y

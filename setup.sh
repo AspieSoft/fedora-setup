@@ -84,37 +84,9 @@ echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
 echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
 
 
-function waitForWifi() {
-  wget -q --spider http://google.com
-  if ! [ $? -eq 0 ]; then
-    echo
-    echo "Internet Connection Error: Waiting for wifi..."
-    echo
-
-    sleep 10
-
-    wget -q --spider http://google.com
-
-    while ! [ $? -eq 0 ]; do
-      sleep 3
-      wget -q --spider http://google.com
-    done
-  fi
-
-  command "$@"
-
-  wget -q --spider http://google.com
-  if ! [ $? -eq 0 ]; then
-    echo "Internet Connection Error: Trying Again..."
-    sleep 10
-    waitForWifi "$@"
-  fi
-}
-
-
 if [ "$processStep" -lt "1" ]; then
   for file in bin/scripts/*.sh; do
-    gitSum=$(waitForWifi curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
+    gitSum=$(curl --silent "https://raw.githubusercontent.com/AspieSoft/fedora-setup/master/$file" | sha256sum | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
     sum=$(sha256sum "$file" | sed -E 's/([a-zA-Z0-9]+).*$/\1/')
     if ! [ "$sum" = "$gitSum" ]; then
       echo "error: checksum failed!"
@@ -163,7 +135,7 @@ fi
 
 if [ "$processStep" -lt "4" ]; then
   echo "updating..."
-  waitForWifi sudo dnf -y update
+  sudo dnf -y update
 
   processStep=$((processStep+1))
 fi
@@ -171,7 +143,7 @@ fi
 # install ufw and disable firewalld
 if [ "$processStep" -lt "5" ]; then
   echo "installing ufw..."
-  waitForWifi sudo dnf -y install ufw
+  sudo dnf -y install ufw
   sudo systemctl stop firewalld
   sudo systemctl disable firewalld
   sudo systemctl enable ufw
@@ -185,8 +157,8 @@ if [ "$processStep" -lt "5" ]; then
 fi
 
 if [ "$processStep" -lt "6" ]; then
-  waitForWifi sudo dnf -y makecache
-  waitForWifi sudo dnf -y update
+  sudo dnf -y makecache
+  sudo dnf -y update
 
   processStep=$((processStep+1))
 fi
@@ -259,7 +231,7 @@ if [ "$processStep" -lt "14" ]; then
 fi
 
 if [ "$processStep" -lt "15" ]; then
-  waitForWifi sudo dnf -y update
+  sudo dnf -y update
   echo "running dnf clean..."
   sudo dnf clean all
 
@@ -284,7 +256,7 @@ if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$au
     sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
     sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service
     sudo cp -f ./assets/apps/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service "/etc/systemd/system"
-    gitVer="$(waitForWifi curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+    gitVer="$(curl --silent 'https://api.github.com/repos/AspieSoft/fedora-setup/releases/latest' | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
     echo "$gitVer" | sudo tee "/etc/aspiesoft-fedora-setup-updates/version.txt"
 
     sudo systemctl daemon-reload
