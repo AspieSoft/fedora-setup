@@ -29,7 +29,6 @@ function cleanup() {
 
   # enable sleep
   sudo systemctl --runtime unmask sleep.target suspend.target hibernate.target hybrid-sleep.target &>/dev/null
-  sudo systemctl restart systemd-logind.service &>/dev/null
 
   # enable auto updates
   gsettings set org.gnome.software download-updates true
@@ -49,7 +48,6 @@ sudo sed -r -i 's/^Defaults([\t ]+)(.*)env_reset(.*)$/Defaults\1\2env_reset\3, t
 
 # disable sleep
 sudo systemctl --runtime mask sleep.target suspend.target hibernate.target hybrid-sleep.target &>/dev/null
-sudo systemctl restart systemd-logind.service &>/dev/null
 
 # disable auto updates
 gsettings set org.gnome.software download-updates false
