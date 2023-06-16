@@ -117,7 +117,6 @@ if ! grep -R "^# Added for Speed" "/etc/dnf/dnf.conf"; then
   echo "max_parallel_downloads=5" | sudo tee -a /etc/dnf/dnf.conf
   echo "defaultyes=True" | sudo tee -a /etc/dnf/dnf.conf
   echo "keepcache=True" | sudo tee -a /etc/dnf/dnf.conf
-  echo "skip_if_unavailable=True" | sudo tee -a /etc/dnf/dnf.conf
 fi
 
 if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
