@@ -20,6 +20,15 @@ function waitForWifi() {
       wget -q --spider http://google.com
     done
   fi
+
+  command "$@"
+
+  wget -q --spider http://google.com
+  if ! [ $? -eq 0 ]; then
+    echo "Internet Connection Error: Trying Again..."
+    sleep 10
+    waitForWifi "$@"
+  fi
 }
 
 
@@ -41,7 +50,7 @@ fi
 
 echo "updating $ver -> $gitVer"
 
-waitForWifi; git clone https://github.com/AspieSoft/fedora-setup.git
+waitForWifi git clone https://github.com/AspieSoft/fedora-setup.git
 
 cd fedora-setup
 
