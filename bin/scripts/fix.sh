@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # install file systems
+echo " - installing file systems..."
 waitForWifi sudo dnf -y install btrfs-progs lvm2 xfsprogs udftools
 
 # install printer software
+echo " - installing printer software..."
 waitForWifi sudo dnf -y install hplip hplip-gui
 
 # hide core files

@@ -60,11 +60,11 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'no
 gsettings set org.gnome.software download-updates false
 
 # disable auto suspend
-echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/systemd/logind.conf
-echo "HandleLidSwitch=ignore" | sudo tee -a /etc/systemd/logind.conf
-echo "HandleLidSwitchDocked=ignore" | sudo tee -a /etc/systemd/logind.conf
-echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf
-echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/systemd/logind.conf
+echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
+echo "HandleLidSwitch=ignore" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
+echo "HandleLidSwitchDocked=ignore" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
+echo "IdleAction=ignore" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
+echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/systemd/logind.conf &>/dev/null
 
 
 function waitForWifi() {
@@ -132,9 +132,11 @@ else
   sudo perl -0777 -i -pe 's/#AspieSoft-TEMP-START(.*)#AspieSoft-TEMP-END//s' /etc/dnf/dnf.conf &>/dev/null
 fi
 
+echo "updating..."
 waitForWifi sudo dnf -y update
 
 # install ufw and disable firewalld
+echo "installing ufw..."
 waitForWifi sudo dnf -y install ufw
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
@@ -148,41 +150,53 @@ sudo ufw delete allow to ff02::fb app mDNS
 waitForWifi sudo dnf -y makecache
 
 # RUN programing-languages.sh
+echo "installing programing languages..."
 bash "./bin/scripts/programing-languages.sh"
 
 # update grub timeout
+echo "changing grub timeout..."
 sudo cp -n /etc/default/grub /etc/default/grub-backup
 sudo sed -r -i 's/^GRUB_TIMEOUT_STYLE=(.*)$/GRUB_TIMEOUT_STYLE=menu/m' /etc/default/grub
 sudo sed -r -i 's/^GRUB_TIMEOUT=(.*)$/GRUB_TIMEOUT=0/m' /etc/default/grub
 sudo update-grub
 
 # RUN preformance.sh
+echo "installing preformance upgrades..."
 bash "./bin/scripts/preformance.sh"
 
 # RUN fix.sh
+echo "installing common fices..."
 bash "./bin/scripts/fix.sh"
 
 # RUN security.sh
+echo "installing security apps..."
 bash "./bin/scripts/security.sh"
 
 # RUN repos.sh
+echo "installing repos..."
 bash "./bin/scripts/repos.sh"
 
 # RUN apps.sh
+echo "installing apps..."
 bash "./bin/scripts/apps.sh"
 
 # RUN shortcuts.sh
+echo "installing shortcuts..."
 bash "./bin/scripts/shortcuts.sh"
 
 waitForWifi sudo dnf -y update
+echo "running dnf clean..."
 sudo dnf clean all
 
 # RUN theme.sh
+echo "installing theme..."
 bash "./bin/scripts/theme.sh"
 
 
 # setup aspiesoft auto updates
 if [ "$autoUpdates" = "y" -o "$autoUpdates" = "Y" -o "$autoUpdates" = "" -o "$autoUpdates" = " " ] ; then
+  echo "installing auto updates..."
+
   sudo mkdir -p /etc/aspiesoft-fedora-setup-updates
   sudo cp -rf ./assets/apps/aspiesoft-fedora-setup-updates/* /etc/aspiesoft-fedora-setup-updates
   sudo rm -f /etc/aspiesoft-fedora-setup-updates/aspiesoft-fedora-setup-updates.service

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # install clamav
+echo " - installing clamav..."
 waitForWifi sudo dnf -y install clamav clamd clamav-update
 sudo systemctl stop clamav-freshclam
 sudo freshclam
@@ -59,6 +60,8 @@ fi
 
 # install aspiesoft clamav download scanner
 if ! [ -d "/etc/aspiesoft-clamav-scanner" ]; then
+  echo " - installing aspiesoft clamav-download-scanner..."
+
   sudo mkdir -p /etc/aspiesoft-clamav-scanner
   git clone https://github.com/AspieSoft/linux-clamav-download-scanner.git
   sudo cp -rf linux-clamav-download-scanner/* /etc/aspiesoft-clamav-scanner
@@ -72,9 +75,11 @@ fi
 
 
 # install bleachbit
+echo " - installing bleachbit..."
 waitForWifi sudo dnf -y install bleachbit
 
 # install auto updates (for fedora)
+echo " - installing dnf-automatic..."
 waitForWifi dnf install dnf-automatic
 sudo sed -r -i 's/^apply_updates(\s*)=(\s*)(.*)$/apply_updates\1=\2yes/m' "/etc/dnf/automatic.conf"
 systemctl enable --now dnf-automatic.timer
