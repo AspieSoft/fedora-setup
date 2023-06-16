@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # install python, c++, and java
-waitForWifi && sudo dnf -y install python python3 python-pip
-waitForWifi && sudo dnf -y install gcc-c++ make gcc
-waitForWifi && sudo dnf -y install java-1.8.0-openjdk.x86_64
-waitForWifi && sudo dnf -y install java-11-openjdk.x86_64
-waitForWifi && sudo dnf -y install java-latest-openjdk.x86_64
+waitForWifi; sudo dnf -y install python python3 python-pip
+waitForWifi; sudo dnf -y install gcc-c++ make gcc
+waitForWifi; sudo dnf -y install java-1.8.0-openjdk.x86_64
+waitForWifi; sudo dnf -y install java-11-openjdk.x86_64
+waitForWifi; sudo dnf -y install java-latest-openjdk.x86_64
 
 # install nodejs
-waitForWifi && sudo dnf -y install nodejs
-waitForWifi && sudo npm -g i npm
+waitForWifi; sudo dnf -y install nodejs
+waitForWifi; sudo npm -g i npm
 npm config set prefix ~/.npm
 
 # add npm to current user
@@ -45,8 +45,8 @@ if ! grep -q 'export N_PREFIX="~/.npm"' "/etc/skel/.profile" ; then
 fi
 
 # install yarn, and git
-waitForWifi && sudo npm -g i yarn
-waitForWifi && sudo dnf -y install git
+waitForWifi; sudo npm -g i yarn
+waitForWifi; sudo dnf -y install git
 
 # install golang
-waitForWifi && sudo dnf -y install golang
+waitForWifi; sudo dnf -y install golang

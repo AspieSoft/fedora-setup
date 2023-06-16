@@ -41,7 +41,7 @@ fi
 
 echo "updating $ver -> $gitVer"
 
-waitForWifi && git clone https://github.com/AspieSoft/fedora-setup.git
+waitForWifi; git clone https://github.com/AspieSoft/fedora-setup.git
 
 cd fedora-setup
 

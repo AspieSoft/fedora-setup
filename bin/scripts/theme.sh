@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # setup theme
-waitForWifi && git clone https://github.com/vinceliuice/Fluent-gtk-theme.git
+waitForWifi; git clone https://github.com/vinceliuice/Fluent-gtk-theme.git
 sudo bash Fluent-gtk-theme/install.sh --theme all --dest /usr/share/themes --size standard --icon zorin --tweaks round noborder
 rm -rf Fluent-gtk-theme
 
-waitForWifi && git clone https://github.com/ZorinOS/zorin-icon-themes.git
+waitForWifi; git clone https://github.com/ZorinOS/zorin-icon-themes.git
 for filename in zorin-icon-themes/Zorin*; do
   sudo cp zorin-icon-themes/LICENSE "$filename"
 done
@@ -23,34 +23,34 @@ gsettings set org.gnome.desktop.sound theme-name "zorin-pokemon"
 gsettings set org.gnome.desktop.background picture-uri "file:///usr/share/backgrounds/AspieSoft/blue.webp"
 gsettings set org.gnome.desktop.background picture-uri-dark "file:///usr/share/backgrounds/AspieSoft/black.webp"
 
-waitForWifi && sudo pip3 install --upgrade git+https://github.com/essembeh/gnome-extensions-cli
+waitForWifi; sudo pip3 install --upgrade git+https://github.com/essembeh/gnome-extensions-cli
 
 gext disable background-logo@fedorahosted.org
 
-waitForWifi && gext -F install arcmenu@arcmenu.com
-waitForWifi && gext -F install dash-to-panel@jderose9.github.com
-waitForWifi && gext -F install vertical-workspaces@G-dH.github.com
-waitForWifi && gext -F install user-theme@gnome-shell-extensions.gcampax.github.com
-waitForWifi && gext -F install gnome-ui-tune@itstime.tech
-waitForWifi && gext -F install gtk4-ding@smedius.gitlab.com
-waitForWifi && gext -F install drive-menu@gnome-shell-extensions.gcampax.github.com
-waitForWifi && gext -F install date-menu-formatter@marcinjakubowski.github.com
-waitForWifi && gext -F install batterytime@typeof.pw
-waitForWifi && gext -F install ControlBlurEffectOnLockScreen@pratap.fastmail.fm
-waitForWifi && gext -F install screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com
-waitForWifi && gext -F install gestureimprovements@gestures
-waitForWifi && gext -F install just-perfection-desktop@just-perfection
+waitForWifi; gext -F install arcmenu@arcmenu.com
+waitForWifi; gext -F install dash-to-panel@jderose9.github.com
+waitForWifi; gext -F install vertical-workspaces@G-dH.github.com
+waitForWifi; gext -F install user-theme@gnome-shell-extensions.gcampax.github.com
+waitForWifi; gext -F install gnome-ui-tune@itstime.tech
+waitForWifi; gext -F install gtk4-ding@smedius.gitlab.com
+waitForWifi; gext -F install drive-menu@gnome-shell-extensions.gcampax.github.com
+waitForWifi; gext -F install date-menu-formatter@marcinjakubowski.github.com
+waitForWifi; gext -F install batterytime@typeof.pw
+waitForWifi; gext -F install ControlBlurEffectOnLockScreen@pratap.fastmail.fm
+waitForWifi; gext -F install screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com
+waitForWifi; gext -F install gestureimprovements@gestures
+waitForWifi; gext -F install just-perfection-desktop@just-perfection
 
-waitForWifi && gext -F install printers@linux-man.org
-waitForWifi && gext -F install clipboard-indicator@tudmotu.com
+waitForWifi; gext -F install printers@linux-man.org
+waitForWifi; gext -F install clipboard-indicator@tudmotu.com
 
-waitForWifi && gext -F install burn-my-windows@schneegans.github.com
-waitForWifi && gext -F install compiz-alike-magic-lamp-effect@hermes83.github.com
+waitForWifi; gext -F install burn-my-windows@schneegans.github.com
+waitForWifi; gext -F install compiz-alike-magic-lamp-effect@hermes83.github.com
 
-waitForWifi && gext -F install Vitals@CoreCoding.com
+waitForWifi; gext -F install Vitals@CoreCoding.com
 gext disable Vitals@CoreCoding.com
 
-waitForWifi && gext -F install allowlockedremotedesktop@kamens.us
+waitForWifi; gext -F install allowlockedremotedesktop@kamens.us
 gext disable allowlockedremotedesktop@kamens.us
 
 # fix keyboard shortcuts
