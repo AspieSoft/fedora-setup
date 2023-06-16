@@ -140,7 +140,7 @@ if [ "$slowWifi" = "y" -o "$slowWifi" = "Y" ] ; then
   # temporarly disable dnf timeout
   if ! grep -R "^#AspieSoft-TEMP-START" "/etc/dnf/dnf.conf"; then
     echo "#AspieSoft-TEMP-START" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
-    echo "timeout=0" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
+    echo "timeout=600" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
     echo "#AspieSoft-TEMP-END" | sudo tee -a /etc/dnf/dnf.conf &>/dev/null
   fi
 else
