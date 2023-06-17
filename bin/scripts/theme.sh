@@ -2,6 +2,7 @@
 
 # setup theme
 git clone https://github.com/vinceliuice/Fluent-gtk-theme.git
+sudo sed -r -i 's/(\s*)dnf\s*install(\s*)/\1dnf -y install\2/m' "Fluent-gtk-theme/install.sh"
 sudo bash Fluent-gtk-theme/install.sh --theme all --dest /usr/share/themes --size standard --icon zorin --tweaks round noborder
 rm -rf Fluent-gtk-theme
 
@@ -32,7 +33,10 @@ gext -F install dash-to-panel@jderose9.github.com
 gext -F install vertical-workspaces@G-dH.github.com
 gext -F install user-theme@gnome-shell-extensions.gcampax.github.com
 gext -F install gnome-ui-tune@itstime.tech
-gext -F install gtk4-ding@smedius.gitlab.com
+
+gext -F install ding@rastersoft.com
+#gext -F install gtk4-ding@smedius.gitlab.com
+
 gext -F install drive-menu@gnome-shell-extensions.gcampax.github.com
 gext -F install date-menu-formatter@marcinjakubowski.github.com
 gext -F install batterytime@typeof.pw
@@ -93,7 +97,7 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderos
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ set org.gnome.shell.extensions.dash-to-panel isolate-workspaces "true"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ set org.gnome.shell.extensions.dash-to-panel panel-element-positions '{"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}],"1":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ set org.gnome.shell.extensions.dash-to-panel dot-style-unfocused "DOTS"
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ set org.gnome.shell.extensions.dash-to-panel panel-sizes "{"0":42,"1":42}"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/ set org.gnome.shell.extensions.dash-to-panel panel-sizes '{"0":42,"1":42}'
 
 # setup vertical workspaces
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/vertical-workspaces@G-dH.github.com/schemas/ set org.gnome.shell.extensions.vertical-workspaces fix-ubuntu-dock "true"
@@ -103,12 +107,14 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/vertical-workspaces@
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/vertical-workspaces@G-dH.github.com/schemas/ set org.gnome.shell.extensions.vertical-workspaces blur-transitions "true"
 
 # setup desktop icons
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-drop-place "false"
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-home "false"
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-second-monitor "true"
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding use-nemo "true"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding show-drop-place "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding show-home "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding show-volumes "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding use-nemo "true"
 
 # setup burn my windows
+rm -rf "$HOME/.config/burn-my-windows/profiles"
+mkdir -p "$HOME/.config/burn-my-windows/profiles"
 sudo cp ./assets/extensions/burn-my-windows.conf "$HOME/.config/burn-my-windows/profiles"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/burn-my-windows@schneegans.github.com/schemas/ set org.gnome.shell.extensions.burn-my-windows active-profile "$HOME/.config/burn-my-windows/profiles/burn-my-windows.conf"
 
@@ -130,3 +136,6 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/user-theme@gnome-she
 
 # other config options
 gsettings set org.gnome.TextEditor restore-session "false"
+
+
+sudo cp -rf "$HOME/.local/share/gnome-shell/extensions" "/etc/skel/.local/share/gnome-shell/extensions"
