@@ -54,3 +54,4 @@ sudo dnf -y install git
 # install golang
 echo " - installing golang..."
 sudo dnf -y install golang
+sudo ln -s /lib/golang /usr/share/go
