@@ -50,6 +50,8 @@ gext -F install screenshot-window-sizer@gnome-shell-extensions.gcampax.github.co
 gext -F install gestureimprovements@gestures
 gext -F install just-perfection-desktop@just-perfection
 
+gext -F install sane-airplane-mode@kippi
+
 gext -F install printers@linux-man.org
 gext -F install clipboard-indicator@tudmotu.com
 
@@ -61,6 +63,9 @@ gext disable Vitals@CoreCoding.com
 
 gext -F install allowlockedremotedesktop@kamens.us
 gext disable allowlockedremotedesktop@kamens.us
+
+gext -F install espresso@coadmunkee.github.com
+gext disable espresso@coadmunkee.github.com
 
 gext enable appindicatorsupport@rgcjonas.gmail.com
 
@@ -162,6 +167,10 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/just-perfection-desk
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas/ set org.gnome.shell.extensions.just-perfection startup-status "0"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas/ set org.gnome.shell.extensions.just-perfection workspace-wrap-around "true"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas/ set org.gnome.shell.extensions.just-perfection window-demands-attention-focus "false"
+
+# disable auto airplane mode
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/sane-airplane-mode@kippi/schemas/ set org.gnome.shell.extensions.sane-airplane-mode enable-airplane-mode "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/sane-airplane-mode@kippi/schemas/ set org.gnome.shell.extensions.sane-airplane-mode enable-bluetooth "false"
 
 # setup user theme
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas/ set org.gnome.shell.extensions.user-theme name "Fluent-round-Dark"
