@@ -37,6 +37,7 @@ sudo flatpak install -y flathub org.blender.Blender
 sudo flatpak install -y flathub org.gimp.GIMP
 sudo dnf -y install pinta
 sudo flatpak install -y flathub com.github.unrud.VideoDownloader
+sudo flatpak install -y flathub org.audacityteam.Audacity
 
 # install video processing software
 echo " - installing video processing software..."
@@ -53,6 +54,7 @@ sudo flatpak install -y flathub org.eclipse.Java
 # install browsers
 echo " - installing chromium..."
 sudo dnf -y install chromium
+sudo flatpak install -y flathub org.gnome.Epiphany
 
 # install steam
 echo " - installing steam..."

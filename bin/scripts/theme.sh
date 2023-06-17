@@ -61,6 +61,8 @@ gext disable Vitals@CoreCoding.com
 gext -F install allowlockedremotedesktop@kamens.us
 gext disable allowlockedremotedesktop@kamens.us
 
+gext enable appindicatorsupport@rgcjonas.gmail.com
+
 # fix keyboard shortcuts
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-workspace-up
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-workspace-down
