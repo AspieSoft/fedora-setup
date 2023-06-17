@@ -38,8 +38,9 @@ gext -F install vertical-workspaces@G-dH.github.com
 gext -F install user-theme@gnome-shell-extensions.gcampax.github.com
 gext -F install gnome-ui-tune@itstime.tech
 
+#todo: determine which of these is compatable per pc and desktop
 gext -F install ding@rastersoft.com
-#gext -F install gtk4-ding@smedius.gitlab.com
+gext -F install gtk4-ding@smedius.gitlab.com
 
 gext -F install drive-menu@gnome-shell-extensions.gcampax.github.com
 gext -F install date-menu-formatter@marcinjakubowski.github.com
@@ -117,6 +118,11 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding show-home "false"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding show-volumes "false"
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/ding@rastersoft.com/schemas/ set org.gnome.shell.extensions.ding use-nemo "true"
+# gtk4
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-drop-place "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-home "false"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding show-second-monitor "true"
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/gtk4-ding@smedius.gitlab.com/schemas/ set org.gnome.shell.extensions.gtk4-ding use-nemo "true"
 
 # setup burn my windows
 rm -rf "$HOME/.config/burn-my-windows/profiles"
