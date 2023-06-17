@@ -45,7 +45,7 @@ gext -F install gtk4-ding@smedius.gitlab.com
 gext -F install drive-menu@gnome-shell-extensions.gcampax.github.com
 gext -F install date-menu-formatter@marcinjakubowski.github.com
 gext -F install batterytime@typeof.pw
-gext -F install ControlBlurEffectOnLockScreen@pratap.fastmail.fm
+#gext -F install ControlBlurEffectOnLockScreen@pratap.fastmail.fm
 gext -F install screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com
 gext -F install gestureimprovements@gestures
 gext -F install just-perfection-desktop@just-perfection
