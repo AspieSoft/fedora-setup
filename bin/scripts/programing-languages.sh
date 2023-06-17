@@ -56,3 +56,9 @@ echo " - installing golang..."
 sudo dnf -y install golang
 sudo ln -s /lib/golang /usr/share/go
 sudo dnf install pcre-devel
+if ! grep -q "go" "$HOME/.hidden" ; then
+  echo "go" | sudo tee -a "$HOME/.hidden"
+fi
+if ! grep -q "go" "/etc/skel/.hidden" ; then
+  echo "go" | sudo tee -a "/etc/skel/.hidden"
+fi
