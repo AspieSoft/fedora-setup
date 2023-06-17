@@ -44,3 +44,7 @@ fi
 
 sudo dnf -y check-update
 sudo flatpak update -y
+
+sudo dnf -y install snapd
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install snap-store

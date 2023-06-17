@@ -6,7 +6,8 @@ sudo dnf -y update
 echo " - installing common essentials..."
 sudo dnf -y install neofetch
 sudo flatpak install -y flathub com.github.tchx84.Flatseal
-sudo dnf -y install dconf-editor gnome-tweaks
+sudo dnf -y install dconf-editor gnome-tweaks gnome-extensions-app
+killall gnome-tweaks # this can fix the app if it will not open
 sudo flatpak install -y flathub org.gnome.Extensions
 sudo flatpak install -y flathub com.mattjakeman.ExtensionManager
 sudo dnf -y install gparted
