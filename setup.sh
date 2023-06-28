@@ -148,10 +148,17 @@ if [ "$processStep" -lt "5" ]; then
   sudo systemctl disable firewalld
   sudo systemctl enable ufw
   sudo systemctl start ufw
-  sudo ufw enable
   sudo ufw delete allow SSH
   sudo ufw delete allow to 244.0.0.251 app mDNS
   sudo ufw delete allow to ff02::fb app mDNS
+
+  sudo ufw limit 22/tcp
+  sudo ufw allow 80/tcp
+  sudo ufw allow 443/tcp
+  sudo ufw default deny incoming
+  sudo ufw default allow outgoing
+
+  sudo ufw enable
 
   processStep=$((processStep+1))
 fi
