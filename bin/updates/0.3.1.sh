@@ -7,7 +7,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
 # install fail2ban
-sudo dnf install fail2ban
+sudo dnf -y install fail2ban
 
 if ! [ -f "/etc/fail2ban/jail.local" ]; then
   sudo touch "/etc/fail2ban/jail.local"

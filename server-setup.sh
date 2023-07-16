@@ -180,7 +180,7 @@ sudo fedora-third-party refresh
 sudo dnf -y groupupdate core
 
 # install media codecs
-sudo dnf install -y --skip-broken @multimedia
+sudo dnf -y install --skip-broken @multimedia
 sudo dnf -y groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin --skip-broken
 sudo dnf -y groupupdate sound-and-video
 
