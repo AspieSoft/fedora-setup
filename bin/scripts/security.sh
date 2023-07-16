@@ -101,3 +101,11 @@ echo " - installing dnf-automatic..."
 sudo dnf -y install dnf-automatic
 sudo sed -r -i 's/^apply_updates(\s*)=(\s*)(.*)$/apply_updates\1=\2yes/m' "/etc/dnf/automatic.conf"
 sudo systemctl enable --now dnf-automatic.timer
+
+# install pwgen
+addDnfPkg pwgen
+
+# install rkhunter
+addDnfPkg rkhunter
+sudo rkhunter --update -q
+sudo rkhunter --propupd -q

@@ -21,8 +21,7 @@ sudo systemctl start thermald
 sudo systemctl enable thermald
 
 
-#todo: consider adding for an optional preformance mode (power mode)
-#sudo dnf install gnome-power-manager power-profiles-daemon
+sudo dnf -y install gnome-power-manager power-profiles-daemon
 
 
 # disable time wasting startup programs
@@ -35,3 +34,9 @@ sudo systemctl disable nfs-client.target
 sudo systemctl disable remote-fs.target
 
 sudo dnf -y --noautoremove remove dmraid device-mapper-multipath
+
+# change grup timeout
+sudo cp -n /etc/default/grub /etc/default/grub-backup
+sudo sed -r -i 's/^GRUB_TIMEOUT_STYLE=(.*)$/GRUB_TIMEOUT_STYLE=menu/m' /etc/default/grub
+sudo sed -r -i 's/^GRUB_TIMEOUT=(.*)$/GRUB_TIMEOUT=0/m' /etc/default/grub
+sudo update-grub

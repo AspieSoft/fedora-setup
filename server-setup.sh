@@ -199,21 +199,21 @@ sudo dnf -y install php-mysqli php-bcmath php-dba php-dom php-enchant php-filein
 
 
 # install nginx
-sudo dnf -y install nginx
-sudo systemctl enable nginx.service
-sudo systemctl start nginx.service
+if [ "$(addPkg dnf nginx)" = "1" ]; then
+  sudo systemctl enable nginx.service
+  sudo systemctl start nginx.service
+fi
 
 
 # install letsencrypt certbot
-sudo dnf -y install snapd
-sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install core
-sudo snap refresh core
-sudo dnf -y remove certbot
-sudo snap install --classic certbot
-sudo ln -s /snap/bin/certbot /usr/bin/certbot
-sudo snap set certbot trust-plugin-with-root=ok
-sudo snap install certbot-dns-cloudflare
+if [ "$(addPkg dnf certbot)" = "1" ]; then
+  sudo dnf -y remove certbot
+
+  sudo snap install --classic certbot
+  sudo ln -s /snap/bin/certbot /usr/bin/certbot
+  sudo snap set certbot trust-plugin-with-root=ok
+  sudo snap install certbot-dns-cloudflare
+fi
 
 
 sudo dnf -y update

@@ -4,9 +4,15 @@
 echo " - installing file systems..."
 sudo dnf -y install btrfs-progs lvm2 xfsprogs udftools
 
+# install 7zip
+addDnfPkg p7zip p7zip-plugins
+
 # install printer software
 echo " - installing printer software..."
 sudo dnf -y install hplip hplip-gui
+
+# install inotify-tools
+addDnfPkg inotify-tools
 
 # hide core files
 if ! [ -f "$HOME/.hidden" ]; then

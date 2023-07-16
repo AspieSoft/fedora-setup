@@ -38,7 +38,6 @@ gext -F install vertical-workspaces@G-dH.github.com
 gext -F install user-theme@gnome-shell-extensions.gcampax.github.com
 gext -F install gnome-ui-tune@itstime.tech
 
-#todo: determine which of these is compatable per pc and desktop
 gext -F install ding@rastersoft.com
 gext -F install gtk4-ding@smedius.gitlab.com
 
@@ -57,6 +56,9 @@ gext -F install clipboard-indicator@tudmotu.com
 
 gext -F install burn-my-windows@schneegans.github.com
 gext -F install compiz-alike-magic-lamp-effect@hermes83.github.com
+
+gext -F install block-caribou-36@lxylxy123456.ercli.dev
+gext disable block-caribou-36@lxylxy123456.ercli.dev
 
 gext -F install Vitals@CoreCoding.com
 gext disable Vitals@CoreCoding.com
@@ -173,7 +175,7 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/sane-airplane-mode@k
 gsettings --schemadir ~/.local/share/gnome-shell/extensions/sane-airplane-mode@kippi/schemas/ set org.gnome.shell.extensions.sane-airplane-mode enable-bluetooth "false"
 
 # setup user theme
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas/ set org.gnome.shell.extensions.user-theme name "Fluent-round-Dark"
+# gsettings --schemadir ~/.local/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas/ set org.gnome.shell.extensions.user-theme name "Fluent-round-Dark"
 
 # other config options
 gsettings set org.gnome.TextEditor restore-session "false"

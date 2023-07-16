@@ -21,6 +21,9 @@ sudo dnf -y install nemo-fileroller
 sudo sed -r -i 's#^inode/directory=(.*)$#inode/directory=nemo.desktop#m' "/usr/share/applications/gnome-mimeapps.list"
 echo 'OnlyShowIn=X-Cinnamon;Budgie;' | sudo tee -a "/usr/share/applications/nautilus-autorun-software.desktop"
 sudo sed -r -i 's/^\[Desktop Action new-window\]/OnlyShowIn=X-Cinnamon;Budgie;\n\n[Desktop Action new-window]/m' "/usr/share/applications/org.gnome.Nautilus.desktop"
+# prevent updates from changing these files
+sudo chattr +i "/usr/share/applications/nemo.desktop"
+sudo chattr +i "/usr/share/applications/org.gnome.Nautilus.desktop"
 
 # install wine
 echo " - installing wine..."
