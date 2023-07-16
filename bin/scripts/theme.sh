@@ -179,6 +179,7 @@ gsettings --schemadir ~/.local/share/gnome-shell/extensions/sane-airplane-mode@k
 
 # other config options
 gsettings set org.gnome.TextEditor restore-session "false"
+gsettings set org.gnome.desktop.interface show-battery-percentage "true"
 
 
 sudo cp -rf "$HOME/.local/share/gnome-shell/extensions" "/etc/skel/.local/share/gnome-shell/extensions"
